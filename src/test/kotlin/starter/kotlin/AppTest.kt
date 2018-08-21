@@ -21,6 +21,9 @@ object AppTest : Spek({
                         Task("330", "serve sandwich 4"),
                         Task("360", "take a well earned break"))))
             }
+            it("should give you an estimate") {
+                SandwichScheduler(4).order(1).shouldEqual(Estimate("" + (360 + 60 + 30)))
+            }
         }
     }
 })

@@ -37,6 +37,10 @@ class SandwichScheduler(val amountOfSandwiches: Int) {
 
     private fun `shouldStartANewSandwich?`(i: Int) = i < amountOfSandwiches
 
+    fun order(amountOfSandwiches: Int): Estimate {
+        return Estimate("" + SandwichScheduler(this.amountOfSandwiches + amountOfSandwiches).calculate().tasks.last().timeOfStart)
+    }
+
     companion object {
         private const val SANDWICH_SERVING_TIME = 30
         private const val SANDWICH_PREPARATION_TIME = 60
