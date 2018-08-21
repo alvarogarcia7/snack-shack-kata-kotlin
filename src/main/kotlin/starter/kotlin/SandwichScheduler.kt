@@ -8,8 +8,7 @@ class SandwichScheduler(val amountOfSandwiches: Int) {
     fun calculate(): Schedule {
         val tasks = mutableListOf<Task>()
         var time = 0
-        tasks.add(Task("" + time, "start making sandwich 1"))
-        time += SANDWICH_PREPARATION_TIME
+        time = startMakingFirstSandwich(tasks, time)
         for (i in 1..amountOfSandwiches) {
             time = serveSandwich(tasks, time, i)
             if (`shouldStartANewSandwich?`(i)) {
@@ -18,6 +17,11 @@ class SandwichScheduler(val amountOfSandwiches: Int) {
         }
         tasks.add(Task("" + time, "take a well earned break"))
         return Schedule(tasks)
+    }
+
+    private fun startMakingFirstSandwich(tasks: MutableList<Task>, time: Int): Int {
+        tasks.add(Task("" + time, "start making sandwich 1"))
+        return time + SANDWICH_PREPARATION_TIME
     }
 
     private fun makeSandwich(tasks: MutableList<Task>, time: Int, i: Int): Int {
