@@ -15,8 +15,12 @@ class SandwichScheduler(val amountOfSandwiches: Int) {
                 time = makeSandwich(tasks, time, i)
             }
         }
-        tasks.add(Task("" + time, "take a well earned break"))
+        takeABreak(tasks, time)
         return Schedule(tasks)
+    }
+
+    private fun takeABreak(tasks: MutableList<Task>, time: Int) {
+        tasks.add(Task("" + time, "take a well earned break"))
     }
 
     private fun startMakingFirstSandwich(tasks: MutableList<Task>, time: Int): Int {
