@@ -1,5 +1,5 @@
 package starter.kotlin
 
-class Schedule(tasks: List<Task>) {
+data class Schedule(val tasks: List<Task>) {
 
 }
