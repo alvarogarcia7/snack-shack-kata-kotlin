@@ -39,7 +39,7 @@ class SandwichScheduler(val amountOfSandwiches: Int, private val clock: starter.
 
     fun order(amountOfSandwiches: Int): Estimate {
         val timeOfStartFromNow = Integer.parseInt(SandwichScheduler(this.amountOfSandwiches + amountOfSandwiches, this.clock).calculate().tasks.last().timeOfStart) - clock.currentTime()
-        return Estimate("" + timeOfStartFromNow)
+        return Estimate(timeOfStartFromNow)
     }
 
     companion object {

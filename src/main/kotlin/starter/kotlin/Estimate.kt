@@ -1,3 +1,3 @@
 package starter.kotlin
 
-data class Estimate(val timeInSecondsFromOrderBeingPlacedBasedOnTheCurrentOrder: String)
+data class Estimate(val timeInSecondsFromOrderBeingPlacedBasedOnTheCurrentOrder: Int)

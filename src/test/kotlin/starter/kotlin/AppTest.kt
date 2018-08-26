@@ -25,13 +25,14 @@ object AppTest : Spek({
             }
             given("should give you an estimate") {
                 it("from the beginning") {
-                    SandwichScheduler(4, starter.kotlin.Clock()).order(1).shouldEqual(Estimate("" + (360 + 60 + 30)))
+                    SandwichScheduler(4, starter.kotlin.Clock()).order(1).shouldEqual(Estimate(360 + 60 + 30))
                 }
                 it("after the schedule has started") {
+                    val elapsedTime = 1
                     val clock = mock<Clock> {
-                        on { currentTime() } doReturn 1
+                        on { currentTime() } doReturn elapsedTime
                     }
-                    SandwichScheduler(4, clock).order(1).shouldEqual(Estimate("" + (360 + 60 + 30 - 1)))
+                    SandwichScheduler(4, clock).order(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
                 }
             }
         }
