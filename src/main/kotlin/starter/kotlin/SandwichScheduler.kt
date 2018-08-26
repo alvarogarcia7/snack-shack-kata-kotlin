@@ -41,7 +41,9 @@ class SandwichScheduler(private val clock: starter.kotlin.Clock) {
     private fun `shouldStartANewSandwich?`(i: Int, amountOfSandwiches: Int) = i < amountOfSandwiches
 
     fun order(amountOfSandwiches: Int): Estimate {
-        val timeOfStartFromNow = SandwichScheduler(this.clock).schedule(this.amountOfSandwiches + amountOfSandwiches).tasks.last().timeOfStart - clock.currentTime()
+        val totalTime = SandwichScheduler(this.clock).schedule(this.amountOfSandwiches + amountOfSandwiches).tasks.last().timeOfStart
+        val elapsedTime = clock.currentTime()
+        val timeOfStartFromNow = totalTime - elapsedTime
         return Estimate(timeOfStartFromNow)
     }
 
