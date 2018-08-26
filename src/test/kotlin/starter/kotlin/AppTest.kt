@@ -30,7 +30,7 @@ object AppTest : Spek({
                     val scheduler = SandwichScheduler(clock)
                     scheduler.schedule(4)
 
-                    scheduler.order(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
+                    scheduler.howLongFor(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
                 }
                 it("after the schedule has started") {
                     val elapsedTime = 1
@@ -38,7 +38,7 @@ object AppTest : Spek({
                     val scheduler = SandwichScheduler(clock)
                     scheduler.schedule(4)
 
-                    scheduler.order(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
+                    scheduler.howLongFor(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
                 }
             }
         }
