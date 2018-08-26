@@ -19,9 +19,7 @@ object AppTest : Spek({
                         Task(150, "serve sandwich 2"),
                         Task(180, "make sandwich 3"),
                         Task(240, "serve sandwich 3"),
-                        Task(270, "make sandwich 4"),
-                        Task(330, "serve sandwich 4"),
-                        Task(360, "take a well earned break"))))
+                        Task(270, "take a well earned break"))))
             }
             given("should give you an estimate") {
                 it("from the beginning") {
@@ -30,7 +28,7 @@ object AppTest : Spek({
                     val scheduler = SandwichScheduler(clock)
                     scheduler.schedule(4)
 
-                    scheduler.howLongFor(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
+                    scheduler.howLongFor(1).shouldEqual(Estimate(270 + 60 + 30 - elapsedTime))
                 }
                 it("after the schedule has started") {
                     val elapsedTime = 1
@@ -38,7 +36,37 @@ object AppTest : Spek({
                     val scheduler = SandwichScheduler(clock)
                     scheduler.schedule(4)
 
-                    scheduler.howLongFor(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
+                    scheduler.howLongFor(1).shouldEqual(Estimate(270 + 60 + 30 - elapsedTime))
+                }
+            }
+
+            given("reject orders with more than 5 minutes of waiting") {
+                it("accept them when the wait time is less than that") {
+                    val elapsedTime = 0
+                    val clock = clockReading(elapsedTime)
+                    val scheduler = SandwichScheduler(clock)
+                    scheduler.schedule(3).shouldEqual(Schedule(listOf(
+                            Task(0, "start making sandwich 1"),
+                            Task(60, "serve sandwich 1"),
+                            Task(90, "make sandwich 2"),
+                            Task(150, "serve sandwich 2"),
+                            Task(180, "make sandwich 3"),
+                            Task(240, "serve sandwich 3"),
+                            Task(270, "take a well earned break"))))
+
+                }
+                it("denies them when the wait time is more than that") {
+                    val elapsedTime = 0
+                    val clock = clockReading(elapsedTime)
+                    val scheduler = SandwichScheduler(clock)
+                    scheduler.schedule(4).shouldEqual(Schedule(listOf(
+                            Task(0, "start making sandwich 1"),
+                            Task(60, "serve sandwich 1"),
+                            Task(90, "make sandwich 2"),
+                            Task(150, "serve sandwich 2"),
+                            Task(180, "make sandwich 3"),
+                            Task(240, "serve sandwich 3"),
+                            Task(270, "take a well earned break"))))
                 }
             }
         }
