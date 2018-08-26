@@ -17,28 +17,28 @@ class SandwichScheduler(val amountOfSandwiches: Int, private val clock: starter.
     }
 
     private fun takeABreak(tasks: MutableList<Task>, time: Int) {
-        tasks.add(Task("" + time, "take a well earned break"))
+        tasks.add(Task(time, "take a well earned break"))
     }
 
     private fun startMakingFirstSandwich(tasks: MutableList<Task>, time: Int): Int {
-        tasks.add(Task("" + time, "start making sandwich 1"))
+        tasks.add(Task(time, "start making sandwich 1"))
         return time + Companion.SANDWICH_PREPARATION_TIME
     }
 
     private fun makeSandwich(tasks: MutableList<Task>, time: Int, i: Int): Int {
-        tasks.add(Task("" + time, "make sandwich ${i + 1}"))
+        tasks.add(Task(time, "make sandwich ${i + 1}"))
         return time + Companion.SANDWICH_PREPARATION_TIME
     }
 
     private fun serveSandwich(tasks: MutableList<Task>, time: Int, i: Int): Int {
-        tasks.add(Task("" + time, "serve sandwich $i"))
+        tasks.add(Task(time, "serve sandwich $i"))
         return time + Companion.SANDWICH_SERVING_TIME
     }
 
     private fun `shouldStartANewSandwich?`(i: Int) = i < amountOfSandwiches
 
     fun order(amountOfSandwiches: Int): Estimate {
-        val timeOfStartFromNow = Integer.parseInt(SandwichScheduler(this.amountOfSandwiches + amountOfSandwiches, this.clock).calculate().tasks.last().timeOfStart) - clock.currentTime()
+        val timeOfStartFromNow = SandwichScheduler(this.amountOfSandwiches + amountOfSandwiches, this.clock).calculate().tasks.last().timeOfStart - clock.currentTime()
         return Estimate(timeOfStartFromNow)
     }
 
