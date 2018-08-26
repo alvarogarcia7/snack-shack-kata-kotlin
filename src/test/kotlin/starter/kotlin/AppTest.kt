@@ -12,7 +12,7 @@ object AppTest : Spek({
     describe("Sandwich scheduler") {
         given("it takes 60 seconds to make a sandwich, 30 to serve it and charge the customer") {
             it("should make a schedule for 4 sandwiches") {
-                SandwichScheduler(4, starter.kotlin.Clock()).calculate().shouldEqual(Schedule(listOf(
+                SandwichScheduler(starter.kotlin.Clock()).calculate(4).shouldEqual(Schedule(listOf(
                         Task(0, "start making sandwich 1"),
                         Task(60, "serve sandwich 1"),
                         Task(90, "make sandwich 2"),
@@ -25,16 +25,29 @@ object AppTest : Spek({
             }
             given("should give you an estimate") {
                 it("from the beginning") {
-                    SandwichScheduler(4, starter.kotlin.Clock()).order(1).shouldEqual(Estimate(360 + 60 + 30))
+                    val elapsedTime = 0
+                    val clock = clockReading(elapsedTime)
+                    val scheduler = SandwichScheduler(clock)
+                    scheduler.calculate(4)
+
+                    scheduler.order(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
                 }
                 it("after the schedule has started") {
                     val elapsedTime = 1
-                    val clock = mock<Clock> {
-                        on { currentTime() } doReturn elapsedTime
-                    }
-                    SandwichScheduler(4, clock).order(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
+                    val clock = clockReading(elapsedTime)
+                    val scheduler = SandwichScheduler(clock)
+                    scheduler.calculate(4)
+
+                    scheduler.order(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
                 }
             }
         }
     }
 })
+
+private fun clockReading(elapsedTime: Int): Clock {
+    val clock = mock<Clock> {
+        on { currentTime() } doReturn elapsedTime
+    }
+    return clock
+}
