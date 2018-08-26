@@ -1,16 +1,18 @@
 package starter.kotlin
 
+import com.nhaarman.mockito_kotlin.doReturn
 import org.amshove.kluent.shouldEqual
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
+import org.mockito.Mockito
 
 object AppTest : Spek({
     describe("Sandwich scheduler") {
         given("it takes 60 seconds to make a sandwich, 30 to serve it and charge the customer") {
             it("should make a schedule for 4 sandwiches") {
-                SandwichScheduler(4).calculate().shouldEqual(Schedule(listOf(
+                SandwichScheduler(4, starter.kotlin.Clock()).calculate().shouldEqual(Schedule(listOf(
                         Task("0", "start making sandwich 1"),
                         Task("60", "serve sandwich 1"),
                         Task("90", "make sandwich 2"),
@@ -21,8 +23,15 @@ object AppTest : Spek({
                         Task("330", "serve sandwich 4"),
                         Task("360", "take a well earned break"))))
             }
-            it("should give you an estimate") {
-                SandwichScheduler(4).order(1).shouldEqual(Estimate("" + (360 + 60 + 30)))
+            given("should give you an estimate") {
+                it("from the beginning") {
+                    SandwichScheduler(4, starter.kotlin.Clock()).order(1).shouldEqual(Estimate("" + (360 + 60 + 30)))
+                }
+                it("after the schedule has started") {
+                    val clock = Mockito.mock(Clock::class.java)
+                    doReturn(1).`when`(clock).currentTime()
+                    SandwichScheduler(4, clock).order(1).shouldEqual(Estimate("" + (360 + 60 + 30 - 1)))
+                }
             }
         }
     }
