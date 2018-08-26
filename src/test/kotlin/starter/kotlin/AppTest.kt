@@ -12,7 +12,7 @@ object AppTest : Spek({
     describe("Sandwich scheduler") {
         given("it takes 60 seconds to make a sandwich, 30 to serve it and charge the customer") {
             it("should make a schedule for 4 sandwiches") {
-                SandwichScheduler(starter.kotlin.Clock()).calculate(4).shouldEqual(Schedule(listOf(
+                SandwichScheduler(starter.kotlin.Clock()).schedule(4).shouldEqual(Schedule(listOf(
                         Task(0, "start making sandwich 1"),
                         Task(60, "serve sandwich 1"),
                         Task(90, "make sandwich 2"),
@@ -28,7 +28,7 @@ object AppTest : Spek({
                     val elapsedTime = 0
                     val clock = clockReading(elapsedTime)
                     val scheduler = SandwichScheduler(clock)
-                    scheduler.calculate(4)
+                    scheduler.schedule(4)
 
                     scheduler.order(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
                 }
@@ -36,7 +36,7 @@ object AppTest : Spek({
                     val elapsedTime = 1
                     val clock = clockReading(elapsedTime)
                     val scheduler = SandwichScheduler(clock)
-                    scheduler.calculate(4)
+                    scheduler.schedule(4)
 
                     scheduler.order(1).shouldEqual(Estimate(360 + 60 + 30 - elapsedTime))
                 }
