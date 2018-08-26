@@ -1,12 +1,12 @@
 package starter.kotlin
 
 import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.mock
 import org.amshove.kluent.shouldEqual
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
-import org.mockito.Mockito
 
 object AppTest : Spek({
     describe("Sandwich scheduler") {
@@ -28,8 +28,9 @@ object AppTest : Spek({
                     SandwichScheduler(4, starter.kotlin.Clock()).order(1).shouldEqual(Estimate("" + (360 + 60 + 30)))
                 }
                 it("after the schedule has started") {
-                    val clock = Mockito.mock(Clock::class.java)
-                    doReturn(1).`when`(clock).currentTime()
+                    val clock = mock<Clock> {
+                        on { currentTime() } doReturn 1
+                    }
                     SandwichScheduler(4, clock).order(1).shouldEqual(Estimate("" + (360 + 60 + 30 - 1)))
                 }
             }

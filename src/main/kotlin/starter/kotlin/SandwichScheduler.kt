@@ -1,6 +1,6 @@
 package starter.kotlin
 
-class SandwichScheduler(val amountOfSandwiches: Int, val clock: starter.kotlin.Clock) {
+class SandwichScheduler(val amountOfSandwiches: Int, private val clock: starter.kotlin.Clock) {
 
     fun calculate(): Schedule {
         val tasks = mutableListOf<Task>()
@@ -38,7 +38,8 @@ class SandwichScheduler(val amountOfSandwiches: Int, val clock: starter.kotlin.C
     private fun `shouldStartANewSandwich?`(i: Int) = i < amountOfSandwiches
 
     fun order(amountOfSandwiches: Int): Estimate {
-        return Estimate("" + SandwichScheduler(this.amountOfSandwiches + amountOfSandwiches, starter.kotlin.Clock()).calculate().tasks.last().timeOfStart)
+        val timeOfStartFromNow = Integer.parseInt(SandwichScheduler(this.amountOfSandwiches + amountOfSandwiches, this.clock).calculate().tasks.last().timeOfStart) - clock.currentTime()
+        return Estimate("" + timeOfStartFromNow)
     }
 
     companion object {
